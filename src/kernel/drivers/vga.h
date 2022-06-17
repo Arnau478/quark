@@ -41,5 +41,10 @@
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
+#define VGA_PORT_CTRL 0x3D4
+#define VGA_PORT_DATA 0x3D5
+
 void set_char(int x, int y, char c);
 void set_color(int x, int y, uint8_t color);
+void set_cursor(int offset);
+int get_cursor();
