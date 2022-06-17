@@ -23,10 +23,13 @@ mboot:
     dd MULTIBOOT_CHECKSUM
 
 call_kmain:
+    ; Call kernel
     call kmain
+    ; If on qemu, shutdown
     push 0x2000
     push 0x604
     call i686_outw
+    ; Halt
     jmp $
 
 section .bss
