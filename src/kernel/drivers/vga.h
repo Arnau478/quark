@@ -46,10 +46,10 @@
 #define VGA_PORT_CTRL 0x3D4
 #define VGA_PORT_DATA 0x3D5
 
-void set_char(int x, int y, char c);
-void set_color(int x, int y, uint8_t color);
-void set_cursor(int offset);
-int get_cursor();
-int print_char(char c, int x, int y);
-void puts_at(char *str, int x, int y);
-void puts(char *str);
+void vga_set_char(int x, int y, char c);
+void vga_set_color(int x, int y, uint8_t color);
+void vga_set_cursor(int offset);
+int vga_get_cursor();
+int vga_print_char(char c, int x, int y);
+void vga_print_string_at(char *str, int x, int y);
+void vga_print_string(char *str);

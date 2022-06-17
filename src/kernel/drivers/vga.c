@@ -3,22 +3,22 @@
 
 static uint8_t current_color = VGA_COLOR_DEFAULT;
 
-void set_char(int x, int y, char c){
+void vga_set_char(int x, int y, char c){
     VGA_MEMORY[(x+y*VGA_WIDTH)*2] = c;
 }
 
-void set_color(int x, int y, uint8_t color){
+void vga_set_color(int x, int y, uint8_t color){
     VGA_MEMORY[(x+y*VGA_WIDTH)*2+1] = color;
 }
 
-void set_cursor(int offset){
+void vga_set_cursor(int offset){
     i686_outb(VGA_PORT_CTRL, 14);
     i686_outb(VGA_PORT_DATA, (uint8_t)(offset >> 8));
     i686_outb(VGA_PORT_CTRL, 15);
     i686_outb(VGA_PORT_DATA, (uint8_t)(offset & 0xff));
 }
 
-int get_cursor(){
+int vga_get_cursor(){
     i686_outb(VGA_PORT_CTRL, 14);
     int offset = i686_inb(VGA_PORT_DATA) << 8; // High byte
     i686_outb(VGA_PORT_CTRL, 15);
@@ -34,7 +34,7 @@ static int get_offset_x(int offset){
     return (offset - (get_offset_y(offset)*VGA_WIDTH));
 }
 
-int print_char(char c, int x, int y){
+int vga_print_char(char c, int x, int y){
     if(x >= VGA_WIDTH || y >= VGA_HEIGHT){ // Incorrect coords
         VGA_MEMORY[2*VGA_WIDTH*VGA_HEIGHT-2] = 'E';
         VGA_MEMORY[2*VGA_WIDTH*VGA_HEIGHT-1] = VGA_COLOR_BG_RED || VGA_COLOR_FG_BLACK;
@@ -43,7 +43,7 @@ int print_char(char c, int x, int y){
 
     int offset;
     if(x >= 0 && y >= 0) offset = y*VGA_WIDTH+x;
-    else offset = get_cursor();
+    else offset = vga_get_cursor();
 
     if(c == '\n'){
         y = get_offset_y(offset);
@@ -61,17 +61,17 @@ int print_char(char c, int x, int y){
 
     // TODO: Scroll
     
-    set_cursor(offset);
+    vga_set_cursor(offset);
     return offset;
 }
 
-void puts_at(char *str, int x, int y){
+void vga_print_string_at(char *str, int x, int y){
     int offset;
     if(x >= 0 && y >= 0){
         offset = y*VGA_WIDTH+x;
     }
     else{
-        offset = get_cursor();
+        offset = vga_get_cursor();
         x = get_offset_x(offset);
         y = get_offset_y(offset);
     }
@@ -105,13 +105,13 @@ void puts_at(char *str, int x, int y){
             }
         }
         else{
-            offset = print_char(*(str++), x, y);
+            offset = vga_print_char(*(str++), x, y);
             x = get_offset_x(offset);
             y = get_offset_y(offset);
         }
     }
 }
 
-void puts(char *str){
-    puts_at(str, -1, -1);
+void vga_print_string(char *str){
+    vga_print_string_at(str, -1, -1);
 }
