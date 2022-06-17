@@ -51,5 +51,5 @@ void set_color(int x, int y, uint8_t color);
 void set_cursor(int offset);
 int get_cursor();
 int print_char(char c, int x, int y);
-void print_string_at(char *str, int x, int y);
-void print_string(char *str);
+void puts_at(char *str, int x, int y);
+void puts(char *str);

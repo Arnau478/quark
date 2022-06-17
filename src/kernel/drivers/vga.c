@@ -65,7 +65,7 @@ int print_char(char c, int x, int y){
     return offset;
 }
 
-void print_string_at(char *str, int x, int y){
+void puts_at(char *str, int x, int y){
     int offset;
     if(x >= 0 && y >= 0){
         offset = y*VGA_WIDTH+x;
@@ -112,6 +112,6 @@ void print_string_at(char *str, int x, int y){
     }
 }
 
-void print_string(char *str){
-    print_string_at(str, -1, -1);
+void puts(char *str){
+    puts_at(str, -1, -1);
 }
