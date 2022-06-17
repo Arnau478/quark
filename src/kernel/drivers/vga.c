@@ -1,7 +1,7 @@
 #include "vga.h"
 #include "../arch/i686/io.h"
 
-static uint8_t current_color = VGA_COLOR_BG_BLACK | VGA_COLOR_FG_WHITE;
+static uint8_t current_color = VGA_COLOR_DEFAULT;
 
 void set_char(int x, int y, char c){
     VGA_MEMORY[(x+y*VGA_WIDTH)*2] = c;
@@ -77,9 +77,38 @@ void print_string_at(char *str, int x, int y){
     }
 
     while(*str){
-        offset = print_char(*(str++), x, y);
-        x = get_offset_x(offset);
-        y = get_offset_y(offset);
+        if(*str == '\x1b'){
+            str++;
+            if(*str != '[') continue;
+            str++;
+            int ansi_col = 0;
+            while(*str >= '0' && *str <= '9'){
+                ansi_col *= 10;
+                ansi_col += *str - '0';
+                str++;
+            }
+            if(*str != 'm') continue;
+            str++;
+            if(ansi_col == 0) current_color = VGA_COLOR_DEFAULT;
+            else if(ansi_col >= 30 && ansi_col <= 37){
+                switch (ansi_col)
+                {
+                    case 30: current_color = (current_color & 0xf0) | VGA_COLOR_FG_BLACK; break;
+                    case 31: current_color = (current_color & 0xf0) | VGA_COLOR_FG_RED; break;
+                    case 32: current_color = (current_color & 0xf0) | VGA_COLOR_FG_GREEN; break;
+                    case 33: current_color = (current_color & 0xf0) | VGA_COLOR_FG_ORANGE; break;
+                    case 34: current_color = (current_color & 0xf0) | VGA_COLOR_FG_BLUE; break;
+                    case 35: current_color = (current_color & 0xf0) | VGA_COLOR_FG_PINK; break;
+                    case 36: current_color = (current_color & 0xf0) | VGA_COLOR_FG_CYAN; break;
+                    case 37: current_color = (current_color & 0xf0) | VGA_COLOR_FG_WHITE; break;
+                }
+            }
+        }
+        else{
+            offset = print_char(*(str++), x, y);
+            x = get_offset_x(offset);
+            y = get_offset_y(offset);
+        }
     }
 }
 
