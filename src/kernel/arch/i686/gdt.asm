@@ -19,7 +19,7 @@ i686_gdt_load:
 .reload_cs:
     ; Reload data segments
     mov ax, [ebp + 16]
-    mov dx, ax
+    mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
@@ -27,5 +27,5 @@ i686_gdt_load:
 
     ; Restore old call frame
     mov esp, ebp
-    push ebp
+    pop ebp
     ret
