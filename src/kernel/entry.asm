@@ -23,6 +23,8 @@ mboot:
     dd MULTIBOOT_CHECKSUM
 
 call_kmain:
+    ; Enable interrupts
+    sti
     ; Call kernel
     call kmain
     ; If on qemu, shutdown

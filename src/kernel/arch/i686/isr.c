@@ -3,6 +3,7 @@
 #include "../../stdio.h"
 #include "idt.h"
 #include "io.h"
+#include "pic.h"
 
 static isr_handler g_isr_handlers[256];
 
@@ -45,6 +46,8 @@ void i686_isr_initialize_gates();
 
 void i686_isr_initialize(){
     i686_isr_initialize_gates();
+
+    i686_pic_initialize();
 
     for(int i = 0; i < 256; i++){
         i686_idt_enable_gate(i);
