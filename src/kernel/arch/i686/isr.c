@@ -57,6 +57,14 @@ void i686_isr_initialize(){
 void __attribute__((cdecl)) i686_isr_handler(registers *regs){
     if(g_isr_handlers[regs->interrupt] != NULL){
         g_isr_handlers[regs->interrupt](regs);
+
+        // Send EOI to PIC if necessary
+        if(regs->interrupt >= PIC1_VEC_OFFSET && regs->interrupt < PIC1_VEC_OFFSET+8){
+            i686_outb(PIC1_CMD_PORT, PIC_EOI);
+        }
+        else if(regs->interrupt >= PIC2_VEC_OFFSET && regs->interrupt < PIC2_VEC_OFFSET+8){
+            i686_outb(PIC2_CMD_PORT, PIC_EOI);
+        }
     }
     else if(regs->interrupt >= 32){
         printf("Unhandled interrupt %i\n", regs->interrupt);

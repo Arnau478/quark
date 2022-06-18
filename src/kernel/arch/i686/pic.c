@@ -14,8 +14,8 @@ void i686_pic_initialize(){
     i686_outb(PIC2_CMD_PORT, 0x11); // PIC2
 
     // ICW2: Remap IRQs
-    i686_outb(PIC1_DATA_PORT, 0x20); // PIC1 remapped to 0x20 (32)
-    i686_outb(PIC2_DATA_PORT, 0x28); // PIC2 remapped to 0x28 (40)
+    i686_outb(PIC1_DATA_PORT, PIC1_VEC_OFFSET); // PIC1 remapped to PIC1_VEC_OFFSET
+    i686_outb(PIC2_DATA_PORT, PIC2_VEC_OFFSET); // PIC2 remapped to PIC2_VEC_OFFSET
 
     // ICW3: Cascade settings
     i686_outb(PIC1_DATA_PORT, 0x04); // PIC1 is told that slave PIC is at IRQ2
