@@ -21,3 +21,6 @@ $(BUILD_DIR)/kernel/asm/%.obj: src/kernel/%.asm $(HEADERS_ASM)
 	@mkdir -p $(@D)
 	@$(TARGET_ASM) $(TARGET_ASMFLAGS) -f elf -o $@ $<
 	@echo -e $(ARROW) "Assembled $<"
+
+src/kernel/arch/i686/isrs_gen.c src/kernel/arch/i686/isrs_gen.inc:
+	scripts/generate_isrs.sh $@
