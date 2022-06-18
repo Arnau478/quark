@@ -7,12 +7,12 @@ typedef struct{
     uint8_t reserved;
     uint8_t flags;
     uint16_t base_high;
-} idt_entry;
+} __attribute__((packed)) idt_entry;
 
 typedef struct{
     uint16_t limit;
     idt_entry *ptr;
-} idt_descriptor;
+} __attribute__((packed)) idt_descriptor;
 
 idt_entry g_idt[256];
 

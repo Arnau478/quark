@@ -11,7 +11,7 @@ typedef struct{
     uint32_t eip, cs, eflags, esp, ss;
 } __attribute__((packed)) registers;
 
-typedef void (*isr_handler)(registers regs);
+typedef void (*isr_handler)(registers *regs);
 
 void i686_isr_initialize();
 void i686_isr_register_handler(int interrupt, isr_handler handler);

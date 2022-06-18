@@ -1,5 +1,8 @@
+#include <stddef.h>
 #include "isr.h"
 #include "../../stdio.h"
+#include "idt.h"
+#include "io.h"
 
 static isr_handler g_isr_handlers[256];
 
@@ -43,11 +46,26 @@ void i686_isr_initialize_gates();
 void i686_isr_initialize(){
     i686_isr_initialize_gates();
 
-    // Remap PIC
+    for(int i = 0; i < 256; i++){
+        i686_idt_enable_gate(i);
+    }
 }
 
-void i686_isr_handler(registers *regs){
-    printf("Interrupt %i\n", regs->interrupt);
+void __attribute__((cdecl)) i686_isr_handler(registers *regs){
+    if(g_isr_handlers[regs->interrupt] != NULL){
+        g_isr_handlers[regs->interrupt](regs);
+    }
+    else if(regs->interrupt >= 32){
+        printf("Unhandled interrupt %i\n", regs->interrupt);
+    }
+    else{
+        printf("Unhandled interrupt %i %s\n", regs->interrupt, g_exceptions[regs->interrupt]);
+        printf("  eax=%i ebx=%i ecx=%i edx=%i esi=%i edi=%i\n", regs->eax, regs->ebx, regs->ecx, regs->edx, regs->esi, regs->edi);
+        printf("  esp=%i ebp=%i eip=%i eflags=%i cs=%i ds=%i ss=%i\n", regs->esp, regs->ebp, regs->eip, regs->eflags, regs->cs, regs->ds, regs->ss);
+        printf("  interrupt=%i errorcode=%i\n", regs->interrupt, regs->error);
+        printf("!!! KERNEL PANIC !!!\n");
+        i686_panic();
+    }
 }
 
 void i686_isr_register_handler(int interrupt, isr_handler handler){

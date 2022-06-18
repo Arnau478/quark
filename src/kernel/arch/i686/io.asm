@@ -29,3 +29,8 @@ i686_outw:
     mov ax, [esp + 8]
     out dx, ax
     ret
+
+global i686_panic
+i686_panic:
+    cli
+    hlt
