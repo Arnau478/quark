@@ -3,7 +3,7 @@
 #include "../stdio.h"
 
 static void timer_handler(registers *regs){
-    printf("TICK\n");
+    //printf("TICK\n");
 }
 
 void timer_initialize(){

@@ -50,8 +50,11 @@ int vga_print_char(char c, int x, int y){
         offset = (y+1)*VGA_WIDTH;
     }
     else if(c == '\b'){
-        VGA_MEMORY[offset*2] = ' ';
-        VGA_MEMORY[offset*2+1] = current_color;
+        if(offset != 0){
+            offset--;
+            VGA_MEMORY[offset*2] = ' ';
+            VGA_MEMORY[offset*2+1] = current_color;
+        }
     }
     else{
         VGA_MEMORY[offset*2] = c;
@@ -114,4 +117,13 @@ void vga_print_string_at(char *str, int x, int y){
 
 void vga_print_string(char *str){
     vga_print_string_at(str, -1, -1);
+}
+
+void vga_fill_screen(char c, uint8_t color){
+    for(int y = 0; y < VGA_HEIGHT; y++){
+        for(int x = 0; x < VGA_WIDTH; x++){
+            vga_set_char(x, y, c);
+            vga_set_color(x, y, color);
+        }
+    }
 }

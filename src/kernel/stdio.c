@@ -101,3 +101,8 @@ void printf(char *fmt, ...){
         else putc(*(fmt++));
     }
 }
+
+void clear_screen(){
+    vga_fill_screen(' ', VGA_COLOR_BG_BLACK | VGA_COLOR_FG_WHITE);
+    vga_set_cursor(0);
+}

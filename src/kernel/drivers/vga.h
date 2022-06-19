@@ -53,3 +53,4 @@ int vga_get_cursor();
 int vga_print_char(char c, int x, int y);
 void vga_print_string_at(char *str, int x, int y);
 void vga_print_string(char *str);
+void vga_fill_screen(char c, uint8_t color);
