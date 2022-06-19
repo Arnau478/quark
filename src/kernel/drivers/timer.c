@@ -1,6 +1,6 @@
 #include "timer.h"
 #include "../arch/i686/isr.h"
-#include "../stdio.h"
+#include "../lib/stdio.h"
 
 static void timer_handler(registers *regs){
     //printf("TICK\n");

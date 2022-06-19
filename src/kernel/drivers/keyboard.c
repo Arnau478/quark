@@ -1,9 +1,9 @@
 #include "../util/string.h"
 #include "keyboard.h"
 #include "../arch/i686/isr.h"
-#include "../stdio.h"
+#include "../lib/stdio.h"
 #include "../arch/i686/io.h"
-#include "../stdio.h"
+#include "../lib/stdio.h"
 
 static char g_key_buffer[256];
 

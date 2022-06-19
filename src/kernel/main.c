@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "stdio.h"
+#include "lib/stdio.h"
 #include "hal/hal.h"
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"

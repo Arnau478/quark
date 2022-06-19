@@ -1,6 +1,6 @@
 #include <stddef.h>
 #include "isr.h"
-#include "../../stdio.h"
+#include "../../lib/stdio.h"
 #include "idt.h"
 #include "io.h"
 #include "pic.h"

@@ -1,7 +1,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include "stdio.h"
-#include "drivers/vga.h"
+#include "../drivers/vga.h"
 
 static char g_HexChars[] = "0123456789abcdef";
 
