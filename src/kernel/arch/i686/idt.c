@@ -1,5 +1,5 @@
 #include "idt.h"
-#include "../../util/binary.h"
+#include "../../lib/binary.h"
 
 typedef struct{
     uint16_t base_low;

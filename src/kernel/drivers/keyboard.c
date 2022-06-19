@@ -1,4 +1,4 @@
-#include "../util/string.h"
+#include "../lib/string.h"
 #include "keyboard.h"
 #include "../arch/i686/isr.h"
 #include "../lib/stdio.h"
