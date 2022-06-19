@@ -4,6 +4,7 @@
 #include "../lib/stdio.h"
 #include "../arch/i686/io.h"
 #include "../lib/stdio.h"
+#include "../shell.h"
 
 static char g_key_buffer[256];
 
@@ -19,7 +20,7 @@ static const char g_sc_ascii[128] = {
 };
 
 static void user_input(char *str){
-    printf("In: \"%s\"\n", str);
+    shell_run(str);
 }
 
 static void keyboard_callback(){
@@ -41,7 +42,9 @@ static void keyboard_callback(){
             // strlen() works here because char[] is the same as
             // char*, and both are null-terminated, so they are
             // exactly the same
-            g_key_buffer[strlen(g_key_buffer)] = g_sc_ascii[scancode];
+            int len = strlen(g_key_buffer);
+            g_key_buffer[len] = g_sc_ascii[scancode];
+            g_key_buffer[len+1] = '\0';
         }
     }
 }
