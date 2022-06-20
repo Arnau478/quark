@@ -16,7 +16,7 @@ void putc(char c){
     vga_print_string(str);
 }
 
-static void printf_signed(unsigned long long num, int radix){
+static void printf_unsigned(unsigned long long num, int radix){
     char buffer[32];
     int pos = 0;
 
@@ -30,7 +30,7 @@ static void printf_signed(unsigned long long num, int radix){
     while(--pos >= 0) putc(buffer[pos]); // Note reverse order
 }
 
-static void printf_unsigned(unsigned long long num, int radix){
+static void printf_signed(unsigned long long num, int radix){
     if(num < 0){
         putc('-');
         printf_unsigned(-num, radix);
