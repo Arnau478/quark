@@ -19,6 +19,9 @@ int shell_run(char *cmd){
     else if(!strcmp(cmd, "CALLOC")){
         printf("Allocated and zeroed 10 chars:\n%x\n", kcalloc(10, sizeof(char)));
     }
+    else if(!strcmp(cmd, "CLEAR")){
+        clear_screen();
+    }
     else{
         printf("SHELL: Unknown command \"%s\"\n", cmd);
         ret = 127;
