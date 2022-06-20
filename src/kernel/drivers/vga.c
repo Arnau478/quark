@@ -1,5 +1,6 @@
 #include "vga.h"
 #include "../arch/i686/io.h"
+#include "../lib/memory.h"
 
 static uint8_t current_color = VGA_COLOR_DEFAULT;
 
@@ -62,7 +63,17 @@ int vga_print_char(char c, int x, int y){
         offset++;
     }
 
-    // TODO: Scroll
+    if(offset >= VGA_WIDTH * VGA_HEIGHT){ // Overflow, must scroll
+        for(int i = 1; i < VGA_HEIGHT; i++){
+            memcpy(VGA_WIDTH*i*2 + VGA_MEMORY, VGA_WIDTH*(i-1)*2 + VGA_MEMORY, VGA_WIDTH*2);
+        }
+        char *last_line = VGA_WIDTH*(VGA_HEIGHT-1)*2 + VGA_MEMORY;
+        for(int i = 0; i < VGA_WIDTH*2; i++){
+            last_line[i] = 0;
+        }
+
+        offset -= VGA_WIDTH;
+    }
     
     vga_set_cursor(offset);
     return offset;

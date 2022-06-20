@@ -19,3 +19,9 @@ void *kcalloc(size_t count, size_t size){
     }
     return ptr;
 }
+
+void memcpy(uint8_t *source, uint8_t *dest, size_t count){
+    for(size_t i = 0; i < count; i++){
+        dest[i] = source[i];
+    }
+}
