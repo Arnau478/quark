@@ -11,6 +11,5 @@ void __attribute__((cdecl)) kmain(uint64_t magic, uint64_t addr){
     keyboard_initialize();
     
     clear_screen();
-    printf("Serial status: %i\n", serial_initialize(COM1));
     for(;;);
 }
