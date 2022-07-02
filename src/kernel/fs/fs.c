@@ -21,14 +21,12 @@ void fs_open(fs_node_t *node, uint8_t read, uint8_t write){
     if(node->open != NULL){
         return node->open(node);
     }
-    return 0;
 }
 
 void fs_close(fs_node_t *node){
     if(node->close != NULL){
         return node->close(node);
     }
-    return 0;
 }
 
 dirent_t *fs_readdir(fs_node_t *node, uint32_t index){

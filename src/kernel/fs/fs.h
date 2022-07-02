@@ -10,7 +10,21 @@
 #define FS_SYMLINK 0x06
 #define FS_MOUNTPOINT 0x08
 
-typedef struct fs_node{
+typedef struct fs_node fs_node_t;
+
+typedef struct dirent{
+    char name[128];
+    uint32_t inode;
+} dirent_t;
+
+typedef uint32_t (*fs_read_fn_t)(fs_node_t *, uint32_t, uint32_t, uint8_t *);
+typedef uint32_t (*fs_write_fn_t)(fs_node_t *, uint32_t, uint32_t, uint8_t *);
+typedef void (*fs_open_fn_t)(fs_node_t *);
+typedef void (*fs_close_fn_t)(fs_node_t *);
+typedef dirent_t *(*fs_readdir_fn_t)(fs_node_t *, uint32_t);
+typedef fs_node_t *(*fs_finddir_fn_t)(fs_node_t *, char *);
+
+struct fs_node{
     char name[128];
     uint32_t mask;
     uint32_t uid;
@@ -26,19 +40,7 @@ typedef struct fs_node{
     fs_readdir_fn_t readdir;
     fs_finddir_fn_t finddir;
     struct fs_node *ptr;
-} fs_node_t;
-
-typedef struct dirent{
-    char name[128];
-    uint32_t inode;
-} dirent_t;
-
-typedef uint32_t (*fs_read_fn_t)(fs_node_t *, uint32_t, uint32_t, uint8_t *);
-typedef uint32_t (*fs_write_fn_t)(fs_node_t *, uint32_t, uint32_t, uint8_t *);
-typedef void (*fs_open_fn_t)(fs_node_t *);
-typedef void (*fs_close_fn_t)(fs_node_t *);
-typedef dirent_t *(*fs_readdir_fn_t)(fs_node_t *, uint32_t);
-typedef fs_node_t *(*fs_finddir_fn_t)(fs_node_t *, char *);
+};
 
 extern fs_node_t *fs_root;
 
