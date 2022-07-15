@@ -1,13 +1,16 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "vfs.h"
+#include "../lib/string.h"
+
+file_t g_file_table[256];
 
 // Return some OR-ed flags for the given mode string
 static uint8_t flags_from_mode(const char *mode){
     uint8_t flags = 0;
     bool read = false;
     bool write = false;
-    while(mode){
+    while(*mode){
         switch(*mode){
             case 'r':
                 read = true;
@@ -35,13 +38,22 @@ static uint8_t flags_from_mode(const char *mode){
     return flags;
 }
 
-file_descriptor_t *vfs_open(const char *path, const char *mode){
+// Initialize VFS
+void vfs_initialize(){
+    for(int i = 0; i < 256; i++){
+        *g_file_table[i].name = '\0';
+        g_file_table[i].flags = 0;
+    }
+}
+
+// Open a file and return its file descriptor
+file_t *vfs_open(const char *path, const char *mode){
     uint8_t flags = flags_from_mode(mode);
     for(int i = 0; i < 256; i++){
-        if(!*g_fds[i].name){ // If empty
-            g_fds[i].flags = flags;
-            strcpy(g_fds[i].name, path);
-            return &g_fds[i];
+        if(!*g_file_table[i].name){ // If empty
+            g_file_table[i].flags = flags;
+            strcpy(g_file_table[i].name, (char *)path); // TODO: Check if path is longer than expected
+            return &g_file_table[i];
         }
     }
     return NULL; // No free file descriptors

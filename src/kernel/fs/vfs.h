@@ -14,8 +14,10 @@
 typedef struct{
     char name[256];
     uint8_t flags;
-} file_descriptor_t;
+} file_t;
 
-file_descriptor_t g_fds[256];
+extern file_t g_file_table[256];
 
-file_descriptor_t *vfs_open(const char *path, const char *mode);
+void vfs_initialize();
+
+file_t *vfs_open(const char *path, const char *mode);
