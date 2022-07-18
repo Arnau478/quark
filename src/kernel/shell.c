@@ -14,12 +14,6 @@ int shell_run(char *cmd){
     else if(!strcmp(cmd, "version")){
         printf("%s\n", OS_VERSION);
     }
-    else if(!strcmp(cmd, "malloc")){
-        printf("Allocated 10 bytes:\n%x\n", kmalloc(10));
-    }
-    else if(!strcmp(cmd, "calloc")){
-        printf("Allocated and zeroed 10 chars:\n%x\n", kcalloc(10, sizeof(char)));
-    }
     else if(!strcmp(cmd, "clear")){
         clear_screen();
     }

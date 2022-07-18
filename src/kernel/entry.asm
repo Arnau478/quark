@@ -26,6 +26,7 @@ call_kmain:
     ; Enable interrupts
     sti
     ; Call kernel
+    push ebx ; pointer to multiboot info
     call kmain
     ; If on qemu, shutdown
     push 0x2000
