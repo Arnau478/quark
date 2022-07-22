@@ -6,6 +6,7 @@
 #include "drivers/serial.h"
 #include "fs/vfs.h"
 #include "mm/pmm.h"
+#include "mm/vmm.h"
 #include "multiboot.h"
 
 extern uint8_t end; // Kernel end
@@ -33,18 +34,15 @@ void __attribute__((cdecl)) kmain(multiboot_info_t *multiboot_info){
 
     pmm_deinit_region(0x100000, (int)(&end) - 0x100000); // Deinit the section the kernel is in
 
+    // Initialize virtual memory
+    vmm_initialize();
+
     // Initialize drivers
     timer_initialize();
     keyboard_initialize();
     
     // Initialize FS
     vfs_initialize();
-
-    // PMM test code
-    uint32_t *p1 = (uint32_t *)pmm_alloc_block();
-    printf("Allocated p1 at: 0x%x\n", p1);
-    uint32_t *p2 = (uint32_t *)pmm_alloc_block();
-    printf("Allocated p2 at: 0x%x\n", p2);
     
     for(;;);
 }

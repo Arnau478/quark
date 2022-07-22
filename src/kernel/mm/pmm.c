@@ -62,7 +62,6 @@ void pmm_initialize(size_t mem_size, phys_addr bitmap){
     g_pmm_max_blocks = (pmm_get_memory_size()*1024) / PMM_BLOCK_SIZE;
     g_pmm_used_blocks = g_pmm_max_blocks;
 
-    // FIXME
     memset(g_pmm_memory_map, 0xFF, pmm_get_block_count() / PMM_BLOCKS_PER_BYTE);
 }
 

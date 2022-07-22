@@ -22,3 +22,7 @@ size_t pmm_get_memory_size();
 uint32_t pmm_get_block_count();
 uint32_t pmm_get_used_block_count();
 uint32_t pmm_get_free_block_count();
+void __attribute__((cdecl)) pmm_paging_enable(bool enabled);
+bool __attribute__((cdecl)) pmm_is_paging();
+void __attribute__((cdecl)) pmm_load_pdbr(phys_addr addr);
+phys_addr __attribute__((cdecl)) pmm_get_pdbr();
