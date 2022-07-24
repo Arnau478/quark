@@ -9,12 +9,11 @@ void pd_entry_del_attr(pd_entry_t *entry, uint32_t attr){
 }
 
 void pd_entry_set_frame(pd_entry_t *entry, phys_addr frame){
-    *entry &= ~PDE_FRAME;
-    *entry |= frame << 12;
+    *entry = (*entry & ~PDE_FRAME) | frame;
 }
 
 phys_addr pd_entry_get_frame(pd_entry_t entry){
-    return entry >> 12;
+    return entry & PDE_FRAME;
 }
 
 bool pd_entry_is_present(pd_entry_t entry){

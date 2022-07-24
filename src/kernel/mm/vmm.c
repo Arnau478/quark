@@ -92,7 +92,7 @@ void vmm_initialize(){
     // Clear default table
     memset(table, 0, sizeof(vmm_page_table_t));
 
-    // First 1MB are identity mapped
+    // First 4MB are identity mapped
     for(int i = 0, frame = 0x0, virt = 0x00000000; i<1024; i++, frame += 4096, virt += 4096){
         // Create a new page
         pt_entry_t page = 0;
