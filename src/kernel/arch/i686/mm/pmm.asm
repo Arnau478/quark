@@ -1,5 +1,5 @@
-global pmm_paging_enable
-pmm_paging_enable:
+global i686_pmm_paging_enable
+i686_pmm_paging_enable:
     [bits 32]
     ; New call frame
     push ebp
@@ -22,22 +22,22 @@ pmm_paging_enable:
     pop ebp
     ret
 
-global pmm_is_paging
-pmm_is_paging:
+global i686_pmm_is_paging
+i686_pmm_is_paging:
     [bits 32]
     mov eax, cr0
     and eax, 0x80000000
     ret
 
-global pmm_load_pdbr
-pmm_load_pdbr:
+global i686_pmm_load_pdbr
+i686_pmm_load_pdbr:
     [bits 32]
     mov eax, [esp + 4]
     mov cr3, eax
     ret
 
-global pmm_get_pdbr
-pmm_get_pdbr:
+global i686_pmm_get_pdbr
+i686_pmm_get_pdbr:
     [bits 32]
     mov eax, cr3
     ret
