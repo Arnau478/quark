@@ -2,7 +2,7 @@
 #include "lib/stdio.h"
 #include "lib/string.h"
 #include "lib/memory.h"
-#include "drivers/serial.h"
+#include "drivers/uart.h"
 
 int shell_run(char *cmd){
     int ret = 0;
@@ -17,12 +17,22 @@ int shell_run(char *cmd){
     else if(!strcmp(cmd, "clear")){
         clear_screen();
     }
-    else if(!strcmp(cmd, "serial")){
-        serial_write(COM1, 'H');
-        serial_write(COM1, 'E');
-        serial_write(COM1, 'L');
-        serial_write(COM1, 'L');
-        serial_write(COM1, 'O');
+    else if(!strcmp(cmd, "uart")){
+        uart_write(COM1, '\x1b');
+        uart_write(COM1, '[');
+        uart_write(COM1, '3');
+        uart_write(COM1, '2');
+        uart_write(COM1, 'm');
+        uart_write(COM1, 'H');
+        uart_write(COM1, 'E');
+        uart_write(COM1, 'L');
+        uart_write(COM1, 'L');
+        uart_write(COM1, 'O');
+        uart_write(COM1, '\n');
+        uart_write(COM1, '\x1b');
+        uart_write(COM1, '[');
+        uart_write(COM1, '0');
+        uart_write(COM1, 'm');
     }
     else{
         printf("SHELL: Unknown command \"%s\"\n", cmd);

@@ -2,6 +2,9 @@
 #include <stdbool.h>
 #include "stdio.h"
 #include "../drivers/vga.h"
+#include "../drivers/uart.h"
+
+typedef void (*print_callable_fn_t)(char);
 
 static char g_HexChars[] = "0123456789abcdef";
 
@@ -16,7 +19,11 @@ void putc(char c){
     vga_print_string(str);
 }
 
-static void printf_unsigned(unsigned long long num, int radix){
+void serial_putc(char c){
+    uart_write(COM1, c); // TODO: Add an option to decide what COM to use
+}
+
+static void printf_unsigned(print_callable_fn_t out_fn, unsigned long long num, int radix){
     char buffer[32];
     int pos = 0;
 
@@ -27,21 +34,20 @@ static void printf_unsigned(unsigned long long num, int radix){
         buffer[pos++] = g_HexChars[rem];
     } while(num > 0);
 
-    while(--pos >= 0) putc(buffer[pos]); // Note reverse order
+    while(--pos >= 0) out_fn(buffer[pos]); // Note reverse order
 }
 
-static void printf_signed(unsigned long long num, int radix){
+static void printf_signed(print_callable_fn_t out_fn, unsigned long long num, int radix){
     if(num < 0){
-        putc('-');
-        printf_unsigned(-num, radix);
+        out_fn('-');
+        printf_unsigned(out_fn, -num, radix);
     }
-    else printf_unsigned(num, radix);
+    else printf_unsigned(out_fn, num, radix);
 }
 
-void printf(char *fmt, ...){
+// printf() template
+static void _vprintf(print_callable_fn_t out_fn, char *fmt, va_list args){
     // Variadic function arguments
-    va_list args;
-    va_start(args, fmt);
 
     while(*fmt){
         if(*fmt == '%'){
@@ -52,10 +58,10 @@ void printf(char *fmt, ...){
             fmt++;
             switch(*fmt){
                 case '%':
-                    putc('%');
+                    out_fn('%');
                     break;
                 case 'c':
-                    putc((char)va_arg(args, int));
+                    out_fn((char)va_arg(args, int));
                     break;
                 case 's':
                     puts(va_arg(args, char *));
@@ -89,17 +95,37 @@ void printf(char *fmt, ...){
             // TODO: Implement length modifiers
             if(number){
                 if(sign){
-                    printf_signed(va_arg(args, int), radix);
+                    printf_signed(out_fn, va_arg(args, int), radix);
                 }
                 else{
-                    printf_unsigned(va_arg(args, unsigned int), radix);
+                    printf_unsigned(out_fn, va_arg(args, unsigned int), radix);
                 }
             }
 
             fmt++;
         }
-        else putc(*(fmt++));
+        else out_fn(*(fmt++));
     }
+}
+
+void vprintf(char *fmt, va_list args){
+    _vprintf(putc, fmt, args);
+}
+
+void printf(char *fmt, ...){
+    va_list args;
+    va_start(args, fmt);
+    _vprintf(putc, fmt, args);
+}
+
+void serial_vprintf(char *fmt, va_list args){
+    _vprintf(putc, fmt, args);
+}
+
+void serial_printf(char *fmt, ...){
+    va_list args;
+    va_start(args, fmt);
+    _vprintf(serial_putc, fmt, args);
 }
 
 void clear_screen(){
