@@ -6,6 +6,7 @@
 #include "../arch/i686/io.h"
 #include "../lib/stdio.h"
 #include "../shell.h"
+#include "../lib/debug.h"
 
 static bool g_caps_lock = false;
 static bool g_shift = false;
@@ -58,5 +59,6 @@ static void keyboard_callback(){
 }
 
 void keyboard_initialize(){
+    debug_printf("[KEYBOARD] Initializing keyboard\n");
     i686_isr_register_handler(IRQ(1), keyboard_callback);
 }

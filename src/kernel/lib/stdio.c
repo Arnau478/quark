@@ -119,7 +119,7 @@ void printf(char *fmt, ...){
 }
 
 void serial_vprintf(char *fmt, va_list args){
-    _vprintf(putc, fmt, args);
+    _vprintf(serial_putc, fmt, args);
 }
 
 void serial_printf(char *fmt, ...){
