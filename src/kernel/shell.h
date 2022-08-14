@@ -1,3 +1,3 @@
 #pragma once
 
-int shell_run();
+void shell();

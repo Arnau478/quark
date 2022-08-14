@@ -17,3 +17,14 @@ void strcpy(char *dest, char *src){
     }
     *dest = '\0';
 }
+
+int atoi(char *str){
+    int res = 0;
+
+    for(int i = 0; i < strlen(str); i++){
+        res *= 10;
+        res += str[i] - '0';
+    }
+
+    return res;
+}

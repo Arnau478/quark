@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "../drivers/vga.h"
 #include "../drivers/uart.h"
+#include "../drivers/keyboard.h"
 
 typedef void (*print_callable_fn_t)(char);
 
@@ -126,6 +127,34 @@ void serial_printf(char *fmt, ...){
     va_list args;
     va_start(args, fmt);
     _vprintf(serial_putc, fmt, args);
+}
+
+void gets(char *str, int max){
+    int count = 0;
+    str[0] = '\0';
+
+    for(;;){
+        if(keyboard_buffer_length()){
+            char c = keyboard_buffer_get();
+            if(c == '\n'){
+                putc(c);
+                return;
+            }
+            else if(c == '\b'){
+                if(count){
+                    putc(c);
+                    str[count--] = '\0';
+                }
+            }
+            else{
+                if(count < max){
+                    putc(c);
+                    str[count] = c;
+                    str[++count] = '\0';
+                }
+            }
+        }
+    }
 }
 
 void clear_screen(){

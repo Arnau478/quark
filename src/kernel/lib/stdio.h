@@ -9,4 +9,5 @@ void vprintf(char *fmt, va_list args);
 void printf(char *fmt, ...);
 void serial_vprintf(char *fmt, va_list args);
 void serial_printf(char *fmt, ...);
+void gets(char *str, int max);
 void clear_screen();
