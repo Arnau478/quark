@@ -9,6 +9,7 @@
 #include "multiboot.h"
 #include "lib/debug.h"
 #include "arch/i686/fdc.h"
+#include "shell.h"
 
 extern uint8_t end; // Kernel end
 

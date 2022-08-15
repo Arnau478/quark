@@ -5,7 +5,6 @@
 #include "../lib/stdio.h"
 #include "../arch/i686/io.h"
 #include "../lib/stdio.h"
-#include "../shell.h"
 #include "../lib/debug.h"
 
 static bool g_caps_lock = false;

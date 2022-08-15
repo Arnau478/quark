@@ -3,6 +3,7 @@
 #include "isr.h"
 #include "io.h"
 #include "../../lib/time.h"
+#include "../../lib/debug.h"
 
 static volatile bool g_fdc_irq = false;
 static int g_curr_drive = 0;

@@ -43,7 +43,7 @@ int shell_run(char *cmd){
                 }
                 i += 128;
                 printf("\nPress enter to continue\n");
-                gets(NULL, NULL);
+                gets(NULL, 0);
             }
         }
         else{
