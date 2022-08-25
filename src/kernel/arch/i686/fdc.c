@@ -2,6 +2,7 @@
 #include "fdc.h"
 #include "isr.h"
 #include "io.h"
+#include "dma.h"
 #include "../../lib/time.h"
 #include "../../lib/debug.h"
 
@@ -20,7 +21,7 @@ static inline void wait_irq(){
 void i686_fdc_initialize_dma(){
     i686_outb(0x0A, 0x06); // Mask DMA channel 2
     i686_outb(0xD8, 0xFF); // Reset master flip-flop
-    i686_outw(0x04, 0x1000); // Address = 0x1000
+    i686_outw(0x04, i686_FDC_DMA_BUFFER); // Address = 0x1000
     i686_outb(0xD8, 0xFF); // Reset master flip-flop
     i686_outb(0x05, 0xFF); // Count to 0x23FF (bytes in 2.5" floppy disk track)
     i686_outb(0x05, 0x23);
@@ -96,6 +97,9 @@ int i686_fdc_motor(bool b){
 
 void i686_fdc_read_sector_imp(uint8_t head, uint8_t track, uint8_t sector){
     uint32_t st0, cyl;
+
+    // Initialize the DMA
+    i686_dma_initialize_floppy((uint8_t *)i686_FDC_DMA_BUFFER, 512);
 
     // Set DMA for read
     i686_fdc_dma_read();
@@ -238,4 +242,18 @@ void i686_fdc_initialize(){
 
     // Set drive info
     i686_fdc_drive_data(13, 1, 0x0F, true);
+}
+
+void i686_dma_initialize_floppy(uint8_t *buffer, unsigned length){
+    i686_dma_reset(1);
+    i686_dma_mask_channel(i686_FDC_DMA_CHANNEL);
+    i686_dma_reset_flipflop(1);
+
+    i686_dma_set_address(i686_FDC_DMA_CHANNEL, (unsigned)buffer);
+    i686_dma_reset_flipflop(1);
+
+    i686_dma_set_count(i686_FDC_DMA_CHANNEL, length);
+    i686_dma_set_read(i686_FDC_DMA_CHANNEL);
+
+    i686_dma_unmask_all(1);
 }

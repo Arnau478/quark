@@ -48,6 +48,8 @@
 #define i686_FDC_SECTOR_DTL_512 2
 #define i686_FDC_SECTOR_DTL_1024 4
 #define i686_FDC_SECTORS_PER_TRACK 18
+#define i686_FDC_DMA_BUFFER 0x1000
+#define i686_FDC_DMA_CHANNEL 2
 
 void i686_fdc_initialize_dma();
 void i686_fdc_dma_read();
@@ -68,3 +70,4 @@ void i686_fdc_enable();
 void i686_fdc_reset();
 void i686_fdc_set_working_drive(int drive);
 void i686_fdc_initialize();
+void i686_dma_initialize_floppy(uint8_t *buffer, unsigned length);
