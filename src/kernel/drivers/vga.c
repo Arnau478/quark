@@ -65,7 +65,7 @@ int vga_print_char(char c, int x, int y){
 
     if(offset >= VGA_WIDTH * VGA_HEIGHT){ // Overflow, must scroll
         for(int i = 1; i < VGA_HEIGHT; i++){
-            memcpy(VGA_WIDTH*i*2 + VGA_MEMORY, VGA_WIDTH*(i-1)*2 + VGA_MEMORY, VGA_WIDTH*2);
+            memcpy(VGA_WIDTH*(i-1)*2 + VGA_MEMORY, VGA_WIDTH*i*2 + VGA_MEMORY, VGA_WIDTH*2);
         }
         char *last_line = VGA_WIDTH*(VGA_HEIGHT-1)*2 + VGA_MEMORY;
         for(int i = 0; i < VGA_WIDTH*2; i++){
