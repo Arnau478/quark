@@ -6,7 +6,7 @@ A quark is an elemental fermion described in the... Oh, the OS?
 
 Quark is a work-in-progress open-source OS designed to be easily scalable. It has been my main project since June 16th.
 
-## But what it does?
+## But what does it do for now?
 As I said, it's a WIP, so it's gonna be growing. But I have some planned milestones. Here they are:
 
 ### Milestone 1: Basic kernel
