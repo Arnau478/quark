@@ -26,6 +26,13 @@ typedef struct{
 } multiboot_elf_section_header_table_t;
 
 typedef struct{
+    uint32_t start;
+    uint32_t end;
+    uint32_t cmdline;
+    uint32_t pad; // Padding, alwys zero
+} multiboot_module_t;
+
+typedef struct{
     /* Multiboot info version number */
     uint32_t flags;
 

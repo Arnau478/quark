@@ -3,6 +3,7 @@
 #include "hal/hal.h"
 #include "drivers/keyboard.h"
 #include "drivers/uart.h"
+#include "drivers/initrd.h"
 #include "fs/vfs.h"
 #include "arch/i686/mm/pmm.h"
 #include "arch/i686/mm/vmm.h"
@@ -50,6 +51,18 @@ void __attribute__((cdecl)) kmain(multiboot_info_t *multiboot_info){
     // Floppy disk controller
     i686_fdc_set_working_drive(0);
     i686_fdc_initialize();
+
+    debug_printf("Multiboot modules: (%d)\n", multiboot_info->mods_count);
+    if(multiboot_info->mods_count == 1){
+        debug_printf("Loading initrd...\n");
+        multiboot_module_t *module;
+        module = (multiboot_module_t *)multiboot_info->mods_addr;
+        debug_printf("Initrd module structure: start=0x%x end=0x%x cmdline=%s\n", module->start, module->end, module->cmdline);
+        debug_printf("%d\n", module->start);
+    }
+    else{
+        debug_printf("WARNING: mods_count is not 1, not loading the initrd");
+    }
 
     // Initialize FS
     vfs_initialize();

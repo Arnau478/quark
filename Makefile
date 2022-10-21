@@ -1,7 +1,8 @@
 .PHONY: quark
-quark: build-dir kernel iso
+quark: build-dir initrd kernel iso
 
 include config/.conf
+include scripts/initrd.mk
 include scripts/toolchain.mk
 include scripts/kernel.mk
 include scripts/run.mk
